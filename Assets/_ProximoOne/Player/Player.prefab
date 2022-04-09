@@ -205,8 +205,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c94e427ea87cf743852c5a571c9404a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _padding: 0
+  _padding:
+    Top: 15
+    Bottom: 0
+    Left: 0
+    Right: 0
+  _objectSize: {x: 1, y: 2}
   _cam: {fileID: 0}
+  _debugDraw: 1
 --- !u!1 &5466005773846590395
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,6 +264,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6826101366118612038}
     m_Modifications:
+    - target: {fileID: 218468921029726294, guid: 5b7a839b204993f41b9cdd5c1760b3e9, type: 3}
+      propertyPath: _fireRate
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6750509697385721145, guid: 5b7a839b204993f41b9cdd5c1760b3e9, type: 3}
       propertyPath: m_RootOrder
       value: 0
