@@ -206,8 +206,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _padding:
-    Top: 15
-    Bottom: 6
+    Top: 4
+    Bottom: 4
     Left: 0
     Right: 0
   _objectSize: {x: 1, y: 2}

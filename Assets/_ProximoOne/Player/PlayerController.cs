@@ -34,30 +34,22 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
-        // Enable action
-        _playerControls.Default.Enable();
-
-        // Assign movement input
-        _playerControls.Default.Move.performed += OnMoveInputRecieved;
-        _playerControls.Default.Move.canceled += OnMoveInputRecieved;
-
-        // Assign shoot input
-        _playerControls.Default.Shoot.performed += OnShootInputRecieved;
-        _playerControls.Default.Shoot.canceled += OnShootInputRecieved;
+        // If in editor or standalone build, use desktop controls
+#if UNITY_STANDALONE || UNITY_EDITOR
+        EnableDesktopControls();
+        // If on IOS or Android, use mobile controls
+#elif UNITY_IOS || UNITY_ANDROID
+        EnableMobileControls();
+#endif
     }
 
     private void OnDisable()
     {
-        // Disable action
-        _playerControls.Default.Disable();
-
-        // Unassign movement input
-        _playerControls.Default.Move.performed -= OnMoveInputRecieved;
-        _playerControls.Default.Move.canceled -= OnMoveInputRecieved;
-
-        // Unassign shoot input
-        _playerControls.Default.Shoot.performed -= OnShootInputRecieved;
-        _playerControls.Default.Shoot.canceled -= OnShootInputRecieved;
+#if UNITY_STANDALONE || UNITY_EDITOR
+        DisableDesktopControls();
+#elif UNITY_IOS || UNITY_ANDROID
+        DisableMobileControls();
+#endif
     }
 
     private void Update()
@@ -72,21 +64,55 @@ public class PlayerController : MonoBehaviour, IDamageable
         _rigidbody.MovePosition(transform.position + (Vector3)movement2D);
     }
 
+#region CONTROLS
+    private void EnableDesktopControls()
+    {
+        // Enable action
+        _playerControls.Desktop.Enable();
+
+        // Assign movement input
+        _playerControls.Desktop.Move.performed += OnMoveInputRecievedDesktop;
+        _playerControls.Desktop.Move.canceled += OnMoveInputRecievedDesktop;
+    }
+
+    private void DisableDesktopControls()
+    {
+        // Disable action
+        _playerControls.Desktop.Disable();
+
+        // Unassign movement input
+        _playerControls.Desktop.Move.performed -= OnMoveInputRecievedDesktop;
+        _playerControls.Desktop.Move.canceled -= OnMoveInputRecievedDesktop;
+    }
+
+    private void EnableMobileControls()
+    {
+
+    }
+
+    private void DisableMobileControls()
+    {
+
+    }
+#endregion
+
     public void TakeDamage(GameObject source, int damage)
     {
         _health -= damage;
         _health = Mathf.Clamp(_health, 0, _maxHealth);
     }
 
-    #region INPUT METHODS
-    public void OnMoveInputRecieved(InputAction.CallbackContext context)
+#if UNITY_STANDALONE || UNITY_EDITOR
+    public void OnMoveInputRecievedDesktop(InputAction.CallbackContext context)
     {
         _movementInput = context.ReadValue<Vector2>();
     }
+#endif
 
-    public void OnShootInputRecieved(InputAction.CallbackContext context)
+#if UNITY_IOS || UNITY_ANDROID
+    public void OnMoveInputRecievedMobile(InputAction.CallbackContext context)
     {
-        _shootInput = context.ReadValue<float>() == 1 ? true : false;
+
     }
-    #endregion
+#endif
 }

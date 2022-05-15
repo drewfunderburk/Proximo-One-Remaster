@@ -2,7 +2,7 @@
     "name": "PlayerControls",
     "maps": [
         {
-            "name": "Default",
+            "name": "Desktop",
             "id": "c68fb8e2-9a93-45cb-ba1b-ca3061b4a140",
             "actions": [
                 {
@@ -10,14 +10,6 @@
                     "type": "Value",
                     "id": "d4305bc6-6ebc-4694-8c38-1d1a0a8b0e1c",
                     "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "Shoot",
-                    "type": "Button",
-                    "id": "9897dcd0-52bf-492c-ac0e-5cb8cc7ba707",
-                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -154,26 +146,31 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "Mobile",
+            "id": "535dd4fc-9def-4f51-823b-4aac23e42170",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Button",
+                    "id": "fa3c08c2-49d1-4ac9-b13e-881ff9f35b53",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "5f535bf5-ff49-4f07-a0c9-53243ef193aa",
-                    "path": "<Keyboard>/space",
+                    "id": "10bf445c-9970-4aac-9439-66dddec4c96a",
+                    "path": "<Touchscreen>/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9f8f54a3-96fd-4f42-b478-026b7ec8e569",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Shoot",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

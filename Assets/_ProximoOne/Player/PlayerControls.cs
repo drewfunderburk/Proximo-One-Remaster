@@ -15,7 +15,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     ""name"": ""PlayerControls"",
     ""maps"": [
         {
-            ""name"": ""Default"",
+            ""name"": ""Desktop"",
             ""id"": ""c68fb8e2-9a93-45cb-ba1b-ca3061b4a140"",
             ""actions"": [
                 {
@@ -23,14 +23,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""d4305bc6-6ebc-4694-8c38-1d1a0a8b0e1c"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""Shoot"",
-                    ""type"": ""Button"",
-                    ""id"": ""9897dcd0-52bf-492c-ac0e-5cb8cc7ba707"",
-                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -167,26 +159,31 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
+                }
+            ]
+        },
+        {
+            ""name"": ""Mobile"",
+            ""id"": ""535dd4fc-9def-4f51-823b-4aac23e42170"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Button"",
+                    ""id"": ""fa3c08c2-49d1-4ac9-b13e-881ff9f35b53"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""5f535bf5-ff49-4f07-a0c9-53243ef193aa"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""10bf445c-9970-4aac-9439-66dddec4c96a"",
+                    ""path"": ""<Touchscreen>/press"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9f8f54a3-96fd-4f42-b478-026b7ec8e569"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shoot"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -195,10 +192,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // Default
-        m_Default = asset.FindActionMap("Default", throwIfNotFound: true);
-        m_Default_Move = m_Default.FindAction("Move", throwIfNotFound: true);
-        m_Default_Shoot = m_Default.FindAction("Shoot", throwIfNotFound: true);
+        // Desktop
+        m_Desktop = asset.FindActionMap("Desktop", throwIfNotFound: true);
+        m_Desktop_Move = m_Desktop.FindAction("Move", throwIfNotFound: true);
+        // Mobile
+        m_Mobile = asset.FindActionMap("Mobile", throwIfNotFound: true);
+        m_Mobile_Move = m_Mobile.FindAction("Move", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -245,49 +244,77 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         asset.Disable();
     }
 
-    // Default
-    private readonly InputActionMap m_Default;
-    private IDefaultActions m_DefaultActionsCallbackInterface;
-    private readonly InputAction m_Default_Move;
-    private readonly InputAction m_Default_Shoot;
-    public struct DefaultActions
+    // Desktop
+    private readonly InputActionMap m_Desktop;
+    private IDesktopActions m_DesktopActionsCallbackInterface;
+    private readonly InputAction m_Desktop_Move;
+    public struct DesktopActions
     {
         private @PlayerControls m_Wrapper;
-        public DefaultActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Default_Move;
-        public InputAction @Shoot => m_Wrapper.m_Default_Shoot;
-        public InputActionMap Get() { return m_Wrapper.m_Default; }
+        public DesktopActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Desktop_Move;
+        public InputActionMap Get() { return m_Wrapper.m_Desktop; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(DefaultActions set) { return set.Get(); }
-        public void SetCallbacks(IDefaultActions instance)
+        public static implicit operator InputActionMap(DesktopActions set) { return set.Get(); }
+        public void SetCallbacks(IDesktopActions instance)
         {
-            if (m_Wrapper.m_DefaultActionsCallbackInterface != null)
+            if (m_Wrapper.m_DesktopActionsCallbackInterface != null)
             {
-                @Move.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnMove;
-                @Shoot.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShoot;
-                @Shoot.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShoot;
-                @Shoot.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShoot;
+                @Move.started -= m_Wrapper.m_DesktopActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_DesktopActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_DesktopActionsCallbackInterface.OnMove;
             }
-            m_Wrapper.m_DefaultActionsCallbackInterface = instance;
+            m_Wrapper.m_DesktopActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Shoot.started += instance.OnShoot;
-                @Shoot.performed += instance.OnShoot;
-                @Shoot.canceled += instance.OnShoot;
             }
         }
     }
-    public DefaultActions @Default => new DefaultActions(this);
-    public interface IDefaultActions
+    public DesktopActions @Desktop => new DesktopActions(this);
+
+    // Mobile
+    private readonly InputActionMap m_Mobile;
+    private IMobileActions m_MobileActionsCallbackInterface;
+    private readonly InputAction m_Mobile_Move;
+    public struct MobileActions
+    {
+        private @PlayerControls m_Wrapper;
+        public MobileActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Mobile_Move;
+        public InputActionMap Get() { return m_Wrapper.m_Mobile; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MobileActions set) { return set.Get(); }
+        public void SetCallbacks(IMobileActions instance)
+        {
+            if (m_Wrapper.m_MobileActionsCallbackInterface != null)
+            {
+                @Move.started -= m_Wrapper.m_MobileActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_MobileActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_MobileActionsCallbackInterface.OnMove;
+            }
+            m_Wrapper.m_MobileActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
+            }
+        }
+    }
+    public MobileActions @Mobile => new MobileActions(this);
+    public interface IDesktopActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnShoot(InputAction.CallbackContext context);
+    }
+    public interface IMobileActions
+    {
+        void OnMove(InputAction.CallbackContext context);
     }
 }
