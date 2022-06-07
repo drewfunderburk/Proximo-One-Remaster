@@ -5,16 +5,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerController : MonoBehaviour, IDamageable
+public class PlayerController : MonoBehaviour
 {
 
     [SerializeField] private float _speed = 1;
-    [SerializeField] private int _maxHealth = 5;
-
-    private int _health;
+    [SerializeField] private bool _shoot = true;
 
     private Vector2 _movementInput;
-    private bool _shootInput;
 
     private Rigidbody _rigidbody;
     private PlayerControls _playerControls;
@@ -25,11 +22,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         _rigidbody = GetComponent<Rigidbody>();
         _playerControls = new PlayerControls();
         _weapon = GetComponentInChildren<WeaponBehaviour>();
-    }
-
-    private void Start()
-    {
-        _health = _maxHealth;
     }
 
     private void OnEnable()
@@ -54,12 +46,13 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        if (_shootInput)
-            _weapon.Fire();
+        // Constantly fire weapon
+        if (_shoot) _weapon.Fire();
     }
 
     private void FixedUpdate()
     {
+        // Apply movement input
         Vector2 movement2D = _movementInput * _speed;
         _rigidbody.MovePosition(transform.position + (Vector3)movement2D);
     }
@@ -95,12 +88,6 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     }
 #endregion
-
-    public void TakeDamage(GameObject source, int damage)
-    {
-        _health -= damage;
-        _health = Mathf.Clamp(_health, 0, _maxHealth);
-    }
 
 #if UNITY_STANDALONE || UNITY_EDITOR
     public void OnMoveInputRecievedDesktop(InputAction.CallbackContext context)
